@@ -1,4 +1,4 @@
-//apply from: "../standalone.gradle" // Uncomment to use module in another project
+apply from: "../standalone.gradle" // Uncomment to use module in another project
 
 ext {
     BASENAME = 'instantsearch-android'
