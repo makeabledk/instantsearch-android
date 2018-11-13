@@ -3,10 +3,10 @@ package com.algolia.instantsearch.ui.databinding;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.databinding.BindingAdapter;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.View;
@@ -17,7 +17,6 @@ import com.algolia.instantsearch.core.model.Errors;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import com.algolia.instantsearch.R;
 
 /**
  * Contains the {@link BindingAdapter} used for gathering {@link BindingHelper#bindings bound attributes}.

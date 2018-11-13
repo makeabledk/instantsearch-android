@@ -8,8 +8,11 @@ dependencies {
     api libraries.eventbus
     api libraries.algolia
 
-    implementation libraries.appcompat
-    implementation libraries.support
+//    implementation libraries.appcompat TODO: Remove once confirmed androidX lib works with v7 app
+//    implementation libraries.support
+    implementation libraries.appcompatX
+    implementation libraries.material
+
     implementation(libraries.json_path) {
         exclude module: 'asm'
     }
