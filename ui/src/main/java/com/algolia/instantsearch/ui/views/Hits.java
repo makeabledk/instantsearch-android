@@ -4,16 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.TypedArray;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.AttributeSet;
@@ -38,12 +30,12 @@ import com.algolia.instantsearch.core.model.AlgoliaResultsListener;
 import com.algolia.instantsearch.core.model.AlgoliaSearcherListener;
 import com.algolia.instantsearch.core.model.Errors;
 import com.algolia.instantsearch.core.model.SearchResults;
+import com.algolia.instantsearch.core.utils.JSONUtils;
 import com.algolia.instantsearch.ui.databinding.BindingHelper;
 import com.algolia.instantsearch.ui.databinding.RenderingHelper;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport.OnItemClickListener;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport.OnItemLongClickListener;
-import com.algolia.instantsearch.core.utils.JSONUtils;
 import com.algolia.instantsearch.ui.utils.LayoutViews;
 import com.algolia.search.saas.AlgoliaException;
 import com.algolia.search.saas.Query;
@@ -60,6 +52,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 /**
  * Displays your search results in a flexible way. Built over a {@link RecyclerView}, it displays a limited window into a large data set of search results.
@@ -81,8 +81,8 @@ public class Hits extends RecyclerView implements AlgoliaResultsListener, Algoli
 
     @NonNull
     protected HitsAdapter adapter;
-    @NonNull
-    private LayoutManager layoutManager;
+//    @NonNull
+//    private LayoutManager layoutManager;
     @SuppressWarnings("NullableProblems" /* late init*/)
     @NonNull
     private Searcher searcher;
@@ -115,7 +115,8 @@ public class Hits extends RecyclerView implements AlgoliaResultsListener, Algoli
             //noinspection ConstantConditions
             searcher = null;
             //noinspection ConstantConditions
-            layoutManager = null;
+            this.setLayoutManager(null);
+//            layoutManager = null;
             //noinspection ConstantConditions
             imeManager = null;
             return;
@@ -158,8 +159,8 @@ public class Hits extends RecyclerView implements AlgoliaResultsListener, Algoli
         setAdapter(adapter);
 
         imeManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        layoutManager = new LinearLayoutManager(context);
-        setLayoutManager(layoutManager);
+//        layoutManager = new LinearLayoutManager(context);
+        setLayoutManager(new LinearLayoutManager(context));
 
         infiniteScrollListener = infiniteScroll ? new InfiniteScrollListener() : null;
         if (infiniteScroll) {
@@ -370,7 +371,7 @@ public class Hits extends RecyclerView implements AlgoliaResultsListener, Algoli
                 return;
             }
 
-            int totalItemCount = layoutManager.getItemCount();
+            int totalItemCount = getLayoutManager().getItemCount();
             if (totalItemCount < lastItemCount) {
                 // we have less elements than before, the count should be reset
                 lastItemCount = totalItemCount;
@@ -405,8 +406,8 @@ public class Hits extends RecyclerView implements AlgoliaResultsListener, Algoli
          */
         private int getLastVisibleItemPosition() {
             int lastVisiblePosition = 0;
-            if (layoutManager instanceof StaggeredGridLayoutManager) {
-                int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(null);
+            if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
+                int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) getLayoutManager()).findLastVisibleItemPositions(null);
                 // last position = biggest value within the list of positions
                 int maxSize = lastVisibleItemPositions[0];
                 for (int lastVisibleItemPosition : lastVisibleItemPositions) {
@@ -415,8 +416,8 @@ public class Hits extends RecyclerView implements AlgoliaResultsListener, Algoli
                     }
                 }
                 lastVisiblePosition = maxSize;
-            } else if (layoutManager instanceof LinearLayoutManager) {
-                lastVisiblePosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+            } else if (getLayoutManager() instanceof LinearLayoutManager) {
+                lastVisiblePosition = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
             }
             return lastVisiblePosition;
         }
